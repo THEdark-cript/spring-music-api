@@ -181,9 +181,9 @@ src/main/java/com/sofar/spring_music_api/
 │
 ├── domain/                                 # Modelagem do Domínio da Aplicação
 │   ├── dto/                                # Objetos de Transferência de Dados (Request/Response)
-│   │   ├── associada/
-│   │   │   ├── AssociadaRequest.java
-│   │   │   └── AssociadaResponse.java
+│   │   ├── usuario/
+│   │   │   ├── UsuarioRequest.java
+│   │   │   └── UsuarioResponse.java
 │   ├── entity/                             # Entidades JPA que espelham as tabelas do Banco de Dados
 │   └── enums/                              # Enumeradores globais (Ex: UserRole)
 │
