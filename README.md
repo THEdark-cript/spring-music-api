@@ -149,10 +149,10 @@ Os commits devem ser escritos em letras minúsculas e seguir a estrutura:
   > *Exemplo:* `feat: implementa a autenticacao jwt no login`
 
 - **`fix`**: Correção de um bug, erro ou comportamento inesperado.
-  > *Exemplo:* `fix: corrige validacao de cpf no cadastro de assistidos`
+  > *Exemplo:* `fix: corrige validacao de cpf no cadastro de usuários`
 
 - **`refactor`**: Reorganização ou melhoria do código existente sem alterar seu comportamento final.
-  > *Exemplo:* `refactor: otimiza a consulta de listagem de membros`
+  > *Exemplo:* `refactor: otimiza a consulta de listagem de usuários`
 
 - **`docs`**: Alterações exclusivas na documentação do projeto.
   > *Exemplo:* `docs: atualiza a arquitetura de pastas no readme`
