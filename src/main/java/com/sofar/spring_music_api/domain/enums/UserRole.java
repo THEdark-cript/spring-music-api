@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum UserRole {
     ESPECTADOR("espectador"),
-    ARTISTA("artistas"),
+    ARTISTA("artista"),
     ADMIN("admin");
 
     private final String role;
