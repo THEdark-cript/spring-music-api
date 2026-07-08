@@ -23,6 +23,7 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("spring-music") // diz quem criou o token
                     .withSubject(user.getEmail()) // usuário que tá recebendo o token
+                    .withClaim("nome", user.getNomeCompleto())
                     .withExpiresAt(dataExpiracao()) // tempo de expiração do token
                     .sign(algoritmo);
         } catch (JWTCreationException exception) {
