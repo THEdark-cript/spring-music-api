@@ -44,6 +44,12 @@ public class EventoService {
 
     @Transactional
     public EventoResponseDTO atualizarEvento(int id, EventoRequestDTO dto) {
+        if (dto.dataEvento().isBefore(LocalDateTime.now())) {
+            throw new DataEventoInvalidaException("A data informada não é permitida porque já passou");
+        }
+        if (ChronoUnit.DAYS.between(dto.prazoVotacao(), dto.dataEvento()) < 7) {
+            throw new PrazoVotacaoInvalidoException("O prazo para encerrar a votação deve ser de no mínimo uma semana antes da data do evento");
+        }
         Evento evento = pesquisarEventoPorId(id);
         Evento eventoAtualizado = mapper.updateEntity(evento, dto);
         return mapper.toResponse(eventoAtualizado);
