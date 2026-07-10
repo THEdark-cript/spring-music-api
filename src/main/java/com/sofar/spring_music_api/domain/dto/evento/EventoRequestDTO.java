@@ -1,5 +1,6 @@
 package com.sofar.spring_music_api.domain.dto.evento;
 
+import com.sofar.spring_music_api.domain.enums.EventoStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -14,6 +15,7 @@ public record EventoRequestDTO(
         @NotBlank String logradouro,
         @NotBlank String bairro,
         @NotBlank LocalDateTime dataEvento,
-        @NotBlank LocalDate prazoVotacao
+        @NotBlank LocalDate prazoVotacao,
+        @NotBlank EventoStatus status
         ) {
 }
