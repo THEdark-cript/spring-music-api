@@ -3,6 +3,7 @@ package com.sofar.spring_music_api.service;
 import com.sofar.spring_music_api.domain.dto.evento.EventoRequestDTO;
 import com.sofar.spring_music_api.domain.dto.evento.EventoResponseDTO;
 import com.sofar.spring_music_api.domain.entity.Evento;
+import com.sofar.spring_music_api.domain.enums.EventoStatus;
 import com.sofar.spring_music_api.exception.evento.DataEventoInvalidaException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.exception.evento.PrazoVotacaoInvalidoException;
@@ -14,12 +15,22 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class EventoService {
     private final EventoRepository repository;
     private final EventoMapper mapper;
+
+    // Este método serve para quando o usuário (artista) se cadastrar em um evento, ele possa selecionar em que o status de inscição está aberto
+    public List<EventoResponseDTO> listarEventosAbertos() {
+        return repository.findAll()
+                .stream()
+                .filter(evento -> evento.getStatus().equals(EventoStatus.ABERTO))
+                .map(mapper::toResponse)
+                .toList();
+    }
 
     private Evento pesquisarEventoPorId(int id) {
         return repository.findById(id).orElseThrow(() -> new EventoNaoEcontradoException("Evento não encontrado"));
