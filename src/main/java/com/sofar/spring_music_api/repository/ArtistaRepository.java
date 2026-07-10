@@ -7,5 +7,4 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface ArtistaRepository extends JpaRepository<Artista, Integer> {
-    Optional<Artista> findByUuid(UUID uuid);
 }
