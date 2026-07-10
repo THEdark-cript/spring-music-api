@@ -1,10 +1,13 @@
 package com.sofar.spring_music_api.domain.entity;
 
+import com.sofar.spring_music_api.domain.enums.EventoStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "evento")
@@ -17,6 +20,10 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Integer id;
+    @UuidGenerator
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    @Setter(AccessLevel.NONE)
+    private UUID uuid;
     @Column(name = "nome", nullable = false, length = 150)
     private String nome;
     @Column(name = "descricao", nullable = false)
@@ -33,4 +40,7 @@ public class Evento {
     private LocalDateTime dataEvento;
     @Column(name = "prazo_votacao", nullable = false)
     private LocalDate prazoVotacao;
+    @Column(name = "status", length = 9, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EventoStatus status;
 }

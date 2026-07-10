@@ -3,12 +3,14 @@ package com.sofar.spring_music_api.domain.entity;
 import com.sofar.spring_music_api.domain.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.UuidGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "usuario")
@@ -21,6 +23,10 @@ public class Usuario implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Integer id;
+    @UuidGenerator
+    @Column(name = "uuid", nullable = false, unique = true, updatable = false)
+    @Setter(AccessLevel.NONE)
+    private UUID uuid;
     @Column(name = "nome_completo", nullable = false, length = 150)
     private String nomeCompleto;
     @Column(name = "cpf", nullable = false, length = 11, unique = true)
