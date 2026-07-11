@@ -2,6 +2,7 @@ package com.sofar.spring_music_api.controller;
 
 import com.sofar.spring_music_api.domain.dto.evento.EventoRequestDTO;
 import com.sofar.spring_music_api.domain.dto.evento.EventoResponseDTO;
+import com.sofar.spring_music_api.domain.dto.voto.ArtistaVotoResponseDTO;
 import com.sofar.spring_music_api.service.EventoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("evento")
@@ -23,9 +25,15 @@ public class EventoController {
         return ResponseEntity.ok(resposta);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<EventoResponseDTO> buscarEventoPorId(@PathVariable int id) {
-        EventoResponseDTO resposta = service.buscarEventoPorId(id);
+    @GetMapping("/{uuid}/artistas")
+    public ResponseEntity<List<ArtistaVotoResponseDTO>> listarArtistasDoEvento(@PathVariable UUID uuid) {
+        List<ArtistaVotoResponseDTO> resposta = service.listarArtistasDoEvento(uuid);
+        return ResponseEntity.ok(resposta);
+    }
+
+    @GetMapping("/{uuid}")
+    public ResponseEntity<EventoResponseDTO> buscarEventoPorUuid(@PathVariable UUID uuid) {
+        EventoResponseDTO resposta = service.buscarEventoPorUuid(uuid);
         return ResponseEntity.ok(resposta);
     }
 
@@ -35,15 +43,15 @@ public class EventoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<EventoResponseDTO> atualizarEvento(@PathVariable int id, @RequestBody @Valid EventoRequestDTO dto) {
-        EventoResponseDTO resposta = service.atualizarEvento(id, dto);
+    @PutMapping("/{uuid}")
+    public ResponseEntity<EventoResponseDTO> atualizarEvento(@PathVariable UUID uuid, @RequestBody @Valid EventoRequestDTO dto) {
+        EventoResponseDTO resposta = service.atualizarEvento(uuid, dto);
         return ResponseEntity.ok(resposta);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> excluirEvento(@PathVariable int id) {
-         service.excluirEvento(id);
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity<Void> excluirEvento(@PathVariable UUID uuid) {
+         service.excluirEvento(uuid);
          return ResponseEntity.noContent().build();
     }
 }
