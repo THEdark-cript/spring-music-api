@@ -7,17 +7,20 @@ import com.sofar.spring_music_api.domain.entity.Artista;
 import com.sofar.spring_music_api.domain.entity.ArtistaEvento;
 import com.sofar.spring_music_api.domain.entity.Evento;
 import com.sofar.spring_music_api.domain.entity.Usuario;
+import com.sofar.spring_music_api.exception.artista.ArtistaNaoEncontradoException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.mapper.ArtistaMapper;
 import com.sofar.spring_music_api.mapper.EventoMapper;
 import com.sofar.spring_music_api.repository.ArtistaEventoRepository;
 import com.sofar.spring_music_api.repository.ArtistaRepository;
 import com.sofar.spring_music_api.repository.EventoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,11 @@ public class ArtistaService {
                 )).toList();
     }
 
+    public Artista buscarArtistaPorUuid(UUID uuid) {
+        return artistaRepository.findByUuid(uuid).orElseThrow(() -> new ArtistaNaoEncontradoException("Artista não encontrado"));
+    }
+
+    @Transactional
     public ArtistaResponseDTO cadastrarArtista(ArtistaRequestDTO dto, Authentication authentication) {
         Usuario usuario = autorizacaoService.usuarioLogado(authentication);
         Evento evento = eventoRepository.findByUuid(dto.idEvento()).orElseThrow(() -> new EventoNaoEcontradoException("Evento não encontrado"));

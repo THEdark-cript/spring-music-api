@@ -1,5 +1,6 @@
 package com.sofar.spring_music_api.exception;
 
+import com.sofar.spring_music_api.exception.artista.ArtistaNaoEncontradoException;
 import com.sofar.spring_music_api.exception.evento.DataEventoInvalidaException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.exception.evento.PrazoVotacaoInvalidoException;
@@ -35,6 +36,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     // USUARIOS:
     @ExceptionHandler(UsuarioNaoEncontradoException.class)
     public ResponseEntity<RestErrorMessage> handleUsuarioNaoEncontrado(UsuarioNaoEncontradoException ex) {
+        RestErrorMessage erro = new RestErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
+    }
+
+    // ARTISTAS:
+    @ExceptionHandler(ArtistaNaoEncontradoException.class)
+    public ResponseEntity<RestErrorMessage> handleArtistaNaoEncontrado(ArtistaNaoEncontradoException ex) {
         RestErrorMessage erro = new RestErrorMessage(HttpStatus.NOT_FOUND, ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
     }

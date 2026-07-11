@@ -36,9 +36,10 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/auth/*").permitAll()
+                        .requestMatchers("/evento/{uuid}/artistas", "/voto", "/voto/*").hasRole("ESPECTADOR")
                         .requestMatchers("/artista", "/artista/*", "/evento/abertos").hasRole("ARTISTA")
                         .requestMatchers("/evento", "/evento/*").hasRole("ADMIN")
-                        .requestMatchers("/auth/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
