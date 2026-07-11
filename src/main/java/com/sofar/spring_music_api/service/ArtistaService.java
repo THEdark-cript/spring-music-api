@@ -14,6 +14,7 @@ import com.sofar.spring_music_api.mapper.EventoMapper;
 import com.sofar.spring_music_api.repository.ArtistaEventoRepository;
 import com.sofar.spring_music_api.repository.ArtistaRepository;
 import com.sofar.spring_music_api.repository.EventoRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,7 @@ public class ArtistaService {
         return artistaRepository.findByUuid(uuid).orElseThrow(() -> new ArtistaNaoEncontradoException("Artista não encontrado"));
     }
 
+    @Transactional
     public ArtistaResponseDTO cadastrarArtista(ArtistaRequestDTO dto, Authentication authentication) {
         Usuario usuario = autorizacaoService.usuarioLogado(authentication);
         Evento evento = eventoRepository.findByUuid(dto.idEvento()).orElseThrow(() -> new EventoNaoEcontradoException("Evento não encontrado"));

@@ -1,6 +1,5 @@
 package com.sofar.spring_music_api.service;
 
-import com.sofar.spring_music_api.domain.dto.artista.ArtistaResponseDTO;
 import com.sofar.spring_music_api.domain.dto.evento.EventoRequestDTO;
 import com.sofar.spring_music_api.domain.dto.evento.EventoResponseDTO;
 import com.sofar.spring_music_api.domain.dto.voto.ArtistaVotoResponseDTO;
@@ -10,7 +9,6 @@ import com.sofar.spring_music_api.domain.enums.EventoStatus;
 import com.sofar.spring_music_api.exception.evento.DataEventoInvalidaException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.exception.evento.PrazoVotacaoInvalidoException;
-import com.sofar.spring_music_api.mapper.ArtistaMapper;
 import com.sofar.spring_music_api.mapper.EventoMapper;
 import com.sofar.spring_music_api.repository.ArtistaEventoRepository;
 import com.sofar.spring_music_api.repository.EventoRepository;
@@ -31,7 +29,6 @@ public class EventoService {
     private final ArtistaEventoRepository artistaEventoRepository;
     private final VotoRepository votoRepository;
     private final EventoMapper eventoMapper;
-    private final ArtistaMapper artistaMapper;
 
     // Este método serve para quando o usuário (artista) se cadastrar em um evento, ele possa selecionar em que o status de inscição está aberto
     public List<EventoResponseDTO> listarEventosAbertos() {
@@ -64,6 +61,7 @@ public class EventoService {
         return eventoMapper.toResponse(evento);
     }
 
+    @Transactional
     public EventoResponseDTO cadastrarEvento(EventoRequestDTO dto) {
         if (dto.dataEvento().isBefore(LocalDateTime.now())) {
             throw new DataEventoInvalidaException("A data informada não é permitida porque já passou");
