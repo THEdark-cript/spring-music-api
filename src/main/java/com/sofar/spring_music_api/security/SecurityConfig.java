@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/auth/*").permitAll()
+                        .requestMatchers("/ranking", "/ranking/*").permitAll()
                         .requestMatchers("/evento/{uuid}/artistas", "/voto", "/voto/*").hasRole("ESPECTADOR")
                         .requestMatchers("/artista", "/artista/*", "/evento/abertos").hasRole("ARTISTA")
                         .requestMatchers("/evento", "/evento/*").hasRole("ADMIN")
