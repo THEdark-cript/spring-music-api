@@ -14,6 +14,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+// Importações do Resilience4J
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+
 @RestController
 @RequestMapping("auth")
 @RequiredArgsConstructor
@@ -22,12 +26,19 @@ public class AutenticacaoController {
     private final UsuarioRepository repository;
     private final TokenService tokenService;
 
+    @RateLimiter(name = "loginLimiter")
+    @CircuitBreaker(name = "loginCircuitBreaker", fallbackMethod = "fallbackLogin")
     @PostMapping("/login")
     public ResponseEntity<AutenticacaoResponseDTO> login(@RequestBody @Valid AutenticacaoRequestDTO dados){
         var emailSenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var autenticacao = this.authenticationManager.authenticate(emailSenha);
         var token = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
         return ResponseEntity.ok(new AutenticacaoResponseDTO(token));
+    }
+
+    // Método de fallback para o Circuit Breaker
+    public ResponseEntity<AutenticacaoResponseDTO> fallbackLogin(AutenticacaoRequestDTO dados, Throwable t) {
+        return ResponseEntity.status(429).body(new AutenticacaoResponseDTO("Serviço temporariamente indisponível. Tente novamente mais tarde."));
     }
 
     @PostMapping("/cadastrar")
