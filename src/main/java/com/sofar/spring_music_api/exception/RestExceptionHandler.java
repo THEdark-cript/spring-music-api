@@ -5,6 +5,7 @@ import com.sofar.spring_music_api.exception.evento.DataEventoInvalidaException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.exception.evento.PrazoVotacaoInvalidoException;
 import com.sofar.spring_music_api.exception.usuario.UsuarioNaoEncontradoException;
+import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,6 +14,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @ExceptionHandler(RequestNotPermitted.class)
+    public ResponseEntity<RestErrorMessage> tratarRequestNotPermitted(RequestNotPermitted exception) {
+        RestErrorMessage erro = new RestErrorMessage(HttpStatus.TOO_MANY_REQUESTS, "Muitas requisições. Por favor, aguarde um momento.");
+        return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(erro);
+    }
 
     // EVENTOS:
     @ExceptionHandler(EventoNaoEcontradoException.class)

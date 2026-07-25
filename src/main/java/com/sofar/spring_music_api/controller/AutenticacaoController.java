@@ -27,18 +27,12 @@ public class AutenticacaoController {
     private final TokenService tokenService;
 
     @RateLimiter(name = "loginLimiter")
-    @CircuitBreaker(name = "loginCircuitBreaker", fallbackMethod = "fallbackLogin")
     @PostMapping("/login")
     public ResponseEntity<AutenticacaoResponseDTO> login(@RequestBody @Valid AutenticacaoRequestDTO dados){
         var emailSenha = new UsernamePasswordAuthenticationToken(dados.email(), dados.senha());
         var autenticacao = this.authenticationManager.authenticate(emailSenha);
         var token = tokenService.gerarToken((Usuario) autenticacao.getPrincipal());
         return ResponseEntity.ok(new AutenticacaoResponseDTO(token));
-    }
-
-    // Método de fallback para o Circuit Breaker
-    public ResponseEntity<AutenticacaoResponseDTO> fallbackLogin(AutenticacaoRequestDTO dados, Throwable t) {
-        return ResponseEntity.status(429).body(new AutenticacaoResponseDTO("Serviço temporariamente indisponível. Tente novamente mais tarde."));
     }
 
     @PostMapping("/cadastrar")
