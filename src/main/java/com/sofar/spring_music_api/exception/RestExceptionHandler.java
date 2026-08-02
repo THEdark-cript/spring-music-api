@@ -4,6 +4,8 @@ import com.sofar.spring_music_api.exception.artista.ArtistaNaoEncontradoExceptio
 import com.sofar.spring_music_api.exception.evento.DataEventoInvalidaException;
 import com.sofar.spring_music_api.exception.evento.EventoNaoEcontradoException;
 import com.sofar.spring_music_api.exception.evento.PrazoVotacaoInvalidoException;
+import com.sofar.spring_music_api.exception.token.TokenInvalidoException;
+import com.sofar.spring_music_api.exception.token.TokenNaoPodeSerGeradoException;
 import com.sofar.spring_music_api.exception.usuario.UsuarioNaoEncontradoException;
 import io.github.resilience4j.ratelimiter.RequestNotPermitted;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,19 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<RestErrorMessage> tratarRequestNotPermitted(RequestNotPermitted exception) {
         RestErrorMessage erro = new RestErrorMessage(HttpStatus.TOO_MANY_REQUESTS, "Muitas requisições. Por favor, aguarde um momento.");
         return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS).body(erro);
+    }
+
+    // TOKEN:
+    @ExceptionHandler(TokenInvalidoException.class)
+    public ResponseEntity<RestErrorMessage> handleTokenInvalido(TokenInvalidoException ex) {
+        RestErrorMessage erro = new RestErrorMessage(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(erro);
+    }
+
+    @ExceptionHandler(TokenNaoPodeSerGeradoException.class)
+    public ResponseEntity<RestErrorMessage> handleTokenInvalido(TokenNaoPodeSerGeradoException ex) {
+        RestErrorMessage erro = new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
     }
 
     // EVENTOS:
