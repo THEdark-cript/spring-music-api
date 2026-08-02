@@ -1,5 +1,6 @@
 package com.sofar.spring_music_api.service;
 
+import com.sofar.spring_music_api.domain.dto.voto.EspectadorVotoResponse;
 import com.sofar.spring_music_api.domain.dto.voto.VotoRequestDTO;
 import com.sofar.spring_music_api.domain.entity.Artista;
 import com.sofar.spring_music_api.domain.entity.Evento;
@@ -12,6 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +34,16 @@ public class VotoService {
         voto.setEvento(evento);
         voto.setDataVoto(LocalDateTime.now());
         votoRepository.save(voto);
+    }
+
+    public List<EspectadorVotoResponse> listarVotosDoEspectador(Authentication authentication) {
+        Usuario usuario = autorizacaoService.usuarioLogado(authentication);
+        List<Voto> votos = votoRepository.findByEspectador(usuario);
+        return votos.stream()
+                .map(voto -> new EspectadorVotoResponse(
+                        voto.getEspectador().getUuid(),
+                        voto.getArtista().getUuid(),
+                        voto.getEvento().getNome()))
+                .toList();
     }
 }
