@@ -45,4 +45,15 @@ public class AutenticacaoController {
 
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/cadastrar/admin")
+    public ResponseEntity<Void> cadastrarAdmin(@RequestBody @Valid CadastroRequestDTO dados){
+        if(this.repository.findByEmail(dados.email()) != null) return ResponseEntity.badRequest().build();
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(dados.senha());
+        Usuario novoUsuario = new Usuario(dados.nomeCompleto(), dados.cpf(),dados.email(), senhaCriptografada, dados.role());
+
+        this.repository.save(novoUsuario);
+
+        return ResponseEntity.ok().build();
+    }
 }
