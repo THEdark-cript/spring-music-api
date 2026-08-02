@@ -1,6 +1,7 @@
 package com.sofar.spring_music_api.service;
 
 import com.sofar.spring_music_api.domain.dto.ranking.RankingArtistaResponseDTO;
+import com.sofar.spring_music_api.domain.dto.ranking.RankingCidadeResponseDTO;
 import com.sofar.spring_music_api.domain.dto.ranking.RankingResponseDTO;
 import com.sofar.spring_music_api.domain.dto.voto.ArtistaVotoResponseDTO;
 import com.sofar.spring_music_api.domain.entity.Evento;
@@ -28,7 +29,7 @@ public class RankingService {
 
             for (ArtistaVotoResponseDTO artista : artistas) {
                 somaVotos += artista.qtdVoto();
-                rankingArtistas.add(new RankingArtistaResponseDTO(artista.nomeGrupo(), artista.qtdVoto()));
+                rankingArtistas.add(new RankingArtistaResponseDTO(artista.uuidArtista(), artista.nomeGrupo(), artista.qtdVoto()));
             }
 
             ranking.add(new RankingResponseDTO(evento.getNome(), evento.getCidade(), somaVotos, rankingArtistas));
@@ -36,9 +37,12 @@ public class RankingService {
         return ranking;
     }
 
-    public List<String> listarCidades() {
+    public List<RankingCidadeResponseDTO> listarCidades() {
         List<Evento> eventos = eventoRepository.findAll();
-        return eventos.stream().map(Evento::getCidade).toList();
+        return eventos.stream().map(evento -> new RankingCidadeResponseDTO(
+                evento.getUuid(),
+                evento.getCidade()
+        )).toList();
     }
 
     public List<RankingResponseDTO> listarArtistasDoEventoPorCidade(String cidade) {
@@ -51,7 +55,7 @@ public class RankingService {
             int somaVotos = 0;
             for (ArtistaVotoResponseDTO artista : artistas) {
                 somaVotos += artista.qtdVoto();
-                rankingArtistas.add(new RankingArtistaResponseDTO(artista.nomeGrupo(), artista.qtdVoto()));
+                rankingArtistas.add(new RankingArtistaResponseDTO(artista.uuidArtista(), artista.nomeGrupo(), artista.qtdVoto()));
             }
             rankingPorCidade.add(new RankingResponseDTO(evento.getNome(), evento.getCidade(), somaVotos, rankingArtistas));
         }

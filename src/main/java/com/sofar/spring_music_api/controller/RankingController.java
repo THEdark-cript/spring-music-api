@@ -1,5 +1,6 @@
 package com.sofar.spring_music_api.controller;
 
+import com.sofar.spring_music_api.domain.dto.ranking.RankingCidadeResponseDTO;
 import com.sofar.spring_music_api.domain.dto.ranking.RankingResponseDTO;
 import com.sofar.spring_music_api.service.RankingService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,8 @@ public class RankingController {
     }
 
     @GetMapping("/cidades")
-    public ResponseEntity<List<String>> listarCidades() {
-        List<String> resposta = service.listarCidades();
+    public ResponseEntity<List<RankingCidadeResponseDTO>> listarCidades() {
+        List<RankingCidadeResponseDTO> resposta = service.listarCidades();
         return ResponseEntity.ok(resposta);
     }
 
