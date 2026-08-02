@@ -3,6 +3,7 @@ package com.sofar.spring_music_api.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -36,11 +37,13 @@ public class SecurityConfig {
                 }))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/auth/*").permitAll()
-                        .requestMatchers("/ranking", "/ranking/*").permitAll()
-                        .requestMatchers("/evento/{uuid}/artistas", "/voto", "/voto/*").hasRole("ESPECTADOR")
-                        .requestMatchers("/artista", "/artista/*", "/evento/abertos").hasRole("ARTISTA")
-                        .requestMatchers("/evento", "/evento/*").hasRole("ADMIN")
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/ranking/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/evento").permitAll()
+                        .requestMatchers("/evento/{uuid}/artistas", "/voto/**").hasRole("ESPECTADOR")
+                        .requestMatchers("/artista/**").hasRole("ARTISTA")
+                        .requestMatchers("/evento/abertos").hasAnyRole("ARTISTA", "ESPECTADOR")
+                        .requestMatchers("/evento/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

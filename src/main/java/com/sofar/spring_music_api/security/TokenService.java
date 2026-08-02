@@ -5,6 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.sofar.spring_music_api.domain.entity.Usuario;
+import com.sofar.spring_music_api.exception.token.TokenInvalidoException;
+import com.sofar.spring_music_api.exception.token.TokenNaoPodeSerGeradoException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,10 +26,11 @@ public class TokenService {
                     .withIssuer("spring-music") // diz quem criou o token
                     .withSubject(user.getEmail()) // usuário que tá recebendo o token
                     .withClaim("nome", user.getNomeCompleto())
+                    .withClaim("role", user.getRole().toString())
                     .withExpiresAt(dataExpiracao()) // tempo de expiração do token
                     .sign(algoritmo);
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Erro ao gerar o token", exception);
+            throw new TokenNaoPodeSerGeradoException("Erro ao gerar o token");
         }
     }
 
@@ -40,7 +43,7 @@ public class TokenService {
                     .verify(token) // descriptografa o token
                     .getSubject();
         } catch (JWTVerificationException exception){
-            throw new RuntimeException("Token inválido", exception);
+            throw new TokenInvalidoException("Token inválido");
         }
     }
 
