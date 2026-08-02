@@ -25,6 +25,12 @@ public class EventoController {
         return ResponseEntity.ok(resposta);
     }
 
+    @GetMapping
+    public ResponseEntity<List<EventoResponseDTO>> listarTodosEventos() {
+        List<EventoResponseDTO> resposta = service.listarTodosEventos();
+        return ResponseEntity.ok(resposta);
+    }
+
     @GetMapping("/{uuid}/artistas")
     public ResponseEntity<List<ArtistaVotoResponseDTO>> listarArtistasDoEvento(@PathVariable UUID uuid) {
         List<ArtistaVotoResponseDTO> resposta = service.listarArtistasDoEvento(uuid);

@@ -30,6 +30,10 @@ public class EventoService {
     private final VotoRepository votoRepository;
     private final EventoMapper eventoMapper;
 
+    public List<EventoResponseDTO> listarTodosEventos() {
+        return eventoRepository.findAll().stream().map(eventoMapper::toResponse).toList();
+    }
+
     // Este método serve para quando o usuário (artista) se cadastrar em um evento, ele possa selecionar em que o status de inscição está aberto
     public List<EventoResponseDTO> listarEventosAbertos() {
         return eventoRepository.findAll()
