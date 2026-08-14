@@ -65,8 +65,7 @@ O **Spring Music** é uma plataforma que permite:
 
 ### 1. Clonar o repositório
 ```bash
-git clone https://github.com/seu-usuario/spring-music.git
-cd spring-music
+git clone https://github.com/THEdark-cript/spring-music-api.git
 ```
 
 ### 2. Criar banco de dados
