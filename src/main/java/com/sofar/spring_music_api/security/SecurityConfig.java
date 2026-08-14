@@ -30,6 +30,10 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(request -> {
                     var corsConfig = new org.springframework.web.cors.CorsConfiguration();
+                    /*
+                    * O recomendado é colocar apenas a URL do servidor do front no setAllowedOrigins, porém como vamos
+                    * adicionar o administrador do sistema via outro cliente HTTP, deixe com o "*" mesmo
+                    */
                     corsConfig.setAllowedOrigins(List.of("*"));
                     corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                     corsConfig.setAllowedHeaders(List.of("*"));
