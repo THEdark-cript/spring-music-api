@@ -10,7 +10,7 @@ O **Spring Music** é uma plataforma que permite:
 
 - **Usuários comuns (espectadores)** votarem em artistas para eventos.
 - **Artistas** se cadastrarem e acompanharem sua colocação no ranking.
-- **Administradores** criarem, editarem e gerenciarem eventos.
+- **Administrador** criar, editar e gerenciar eventos.
 
 ---
 
@@ -92,8 +92,6 @@ No terminal do linux, rode os seguinte comandos para criar o banco de dados:
     ```bash
     \q
     ```
-   
-### 3. Configurando variáveis de ambiente
 
 ### 3. Configuração de Variáveis de Ambiente
 
@@ -114,60 +112,19 @@ Dessa forma, você mantém as credenciais fora do código e facilita a troca ent
 
 ### 4. Executando o projeto
 
-Você pode ir na classe [SpringMusicApiApplication.java](./src/main/java/com/sofar/spring_music_api/SpringMusicApiApplication.java) e clicar no botão de run ou digitar este comando no terminal:
+
+
+Para executar o projeto, você pode ir na classe [SpringMusicApiApplication.java](./src/main/java/com/sofar/spring_music_api/SpringMusicApiApplication.java) e clicar no botão de run ou digitar este comando no terminal:
 
 ```bash
 ./mvnw spring-boot:run
 ```
 
+Esta API é consumida pelo front-end do Spring Music, para acessar o repositório do front, [clique aqui](https://github.com/RhuanFelix/spring-music.git). 
+
+No front não tem como você criar um administrador, então você terá que usar um cliente HTTP como Insomnia ou Postman para criar um perfil de administrador utilizando o endpoint ```POST /auth/cadastrar/admin```, enviando como corpo da requisição um objeto JSON com os atributos do DTO [CadastroRequestDTO.java](./src/main/java/com/sofar/spring_music_api/domain/dto/autenticacao/CadastroRequestDTO.java).
+
 ---
-
-## Estratégia de Branches (Fluxo de Trabalho)
-
-Para manter o histórico de código organizado, seguro e mitigar conflitos entre a equipe, o projeto adota um modelo baseado nas melhores práticas do *Git Flow*.
-
-- **`main`**: É a branch de produção da API.
-  > Contém exclusivamente o código estável, exaustivamente testado e pronto para o usuário final. **Nunca** deve receber commits ou desenvolvimento direto.
-
-- **`develop`**: É a branch de integração e o coração do desenvolvimento.
-  > Centraliza todas as novas funcionalidades que estão sendo construídas pela equipe. Quando a `develop` atinge um estado totalmente estável e validado, um deploy é preparado para ser mesclado com a `main`.
-
-- **Branches de Funcionalidade (`feature/`, `fix/`)**: Onde o trabalho real acontece.
-  > O desenvolvedor deve criar uma nova branch **sempre a partir da `develop`** para isolar a criação de uma funcionalidade ou a correção de um problema.
-  >
-  > *   *Nomenclatura recomendada:* `feature/nome-da-tarefa` ou `fix/nome-do-erro`
-  > *   *Fluxo:* Após concluir e validar a tarefa localmente, o desenvolvedor abre um *Pull Request* para integrar o código de volta à branch `develop`.
-
-## Padrões de Commit (Conventional Commits)
-
-Adotamos o padrão de *Conventional Commits* para garantir que o histórico de alterações do Git seja legível, organizado e fácil de automatizar.
-
-Os commits devem ser escritos em letras minúsculas e seguir a estrutura:  
-`tipo: descrição curta e direta`
-
-- **`feat`**: Introdução de uma nova funcionalidade no sistema.
-  > *Exemplo:* `feat: implementa a autenticacao jwt no login`
-
-- **`fix`**: Correção de um bug, erro ou comportamento inesperado.
-  > *Exemplo:* `fix: corrige validacao de cpf no cadastro de usuários`
-
-- **`refactor`**: Reorganização ou melhoria do código existente sem alterar seu comportamento final.
-  > *Exemplo:* `refactor: otimiza a consulta de listagem de usuários`
-
-- **`docs`**: Alterações exclusivas na documentação do projeto.
-  > *Exemplo:* `docs: atualiza a arquitetura de pastas no readme`
-
-- **`style`**: Mudanças de formatação e estilo que não afetam a lógica do código (espaços, identação, ponto e vírgula, etc.).
-  > *Exemplo:* `style: formata as classes do pacote service conforme o padrao`
-
-- **`test`**: Criação, modificação ou acréscimo de testes unitários ou de integração.
-  > *Exemplo:* `test: adiciona testes de integracao para o fluxo de cadastro`
-
-- **`chore`**: Tarefas gerais de manutenção, atualização de dependências, scripts ou configurações de build.
-  > *Exemplo:* `chore: atualiza as dependencias do spring boot no pom.xml`
-
-- **`hotfix`**: Correção urgente aplicada diretamente para resolver uma falha grave encontrada em ambiente de produção.
-  > *Exemplo:* `hotfix: corrige vazamento de memoria na validacao do token`
 
 ## Arquitetura de Pastas
 
@@ -175,8 +132,6 @@ A estrutura do projeto adota o padrão de **Camadas**. Ela garante a separação
 
 ```
 src/main/java/com/sofar/spring_music_api/
-├── config/                                 # Configurações globais da aplicação (Beans, OpenAPI/Swagger)
-│
 ├── controller/                             # Camada de Entrada (REST Controllers)
 │
 ├── domain/                                 # Modelagem do Domínio da Aplicação
@@ -189,9 +144,18 @@ src/main/java/com/sofar/spring_music_api/
 │
 ├── exception/                              # Tratamento de erros global da API (@ControllerAdvice e subexceções)
 │
+├── mapper/                                 # Mapeamento entre entidade e DTOs
+│
 ├── repository/                             # Camada de Acesso ao Banco (Interfaces Spring Data JPA)
 │
 ├── security/                               # Infraestrutura de Autenticação e Autorização (Spring Security + JWT)
 │
 └── service/                                # Camada de Regras de Negócio e Lógica da Aplicação
 ```
+## Desenvolvedores
+
+Os dois projetos do Spring Music (front e back), foram desenvolvidos por:
+
+- [Anthony Kiss](https://github.com/THEdark-cript);
+- [Francisco Neto](https://github.com/Netoady);
+- [Rhuan Félix](https://github.com/RhuanFelix).
